@@ -4,21 +4,21 @@
       <ng-template matStepLabel>Company details</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Samuel Lee" formControlName="name" />
+        <input matInput placeholder="Samuel Lee" formControlName="name" id="company-name"/>
         @if (companyDetailsFg.controls.name.invalid) {
         <mat-error>This field is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>SIREN</mat-label>
-        <input matInput placeholder="784671695" formControlName="siren" />
+        <input matInput placeholder="784671695" formControlName="siren" id="company-siren"/>
         <mat-hint>This should be 9 digits</mat-hint>
         @if (companyDetailsFg.controls.siren.invalid) {
         <mat-error>{{ companySirenErrorMsg }}</mat-error>
         }
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext [disabled]="companyDetailsFg.invalid">
+        <button mat-button matStepperNext [disabled]="companyDetailsFg.invalid" id="company-next-btn">
           Next
         </button>
       </div>
@@ -29,32 +29,33 @@
       <ng-template matStepLabel>Customer details</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Jean Paul" formControlName="name" />
+        <input matInput placeholder="Jean Paul" formControlName="name" id="customer-name"/>
         @if (customerDetailsFg.controls.name.invalid) {
         <mat-error>This field is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput placeholder="jean@mail.me" formControlName="email" />
+        <input matInput placeholder="jean@mail.me" formControlName="email" id="customer-email" />
         @if (customerDetailsFg.controls.email.invalid) {
         <mat-error>{{ customerEmailErrorMsg }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Phone</mat-label>
-        <input matInput placeholder="0909710978" formControlName="telephone" />
+        <input matInput placeholder="0909710978" formControlName="telephone" id="customer-phone" />
         <mat-hint>Only french numbers are supported</mat-hint>
         @if (customerDetailsFg.controls.telephone.invalid) {
         <mat-error>{{ customerPhoneErrorMsg }}</mat-error>
         }
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperPrevious id="customer-back-btn">Back</button>
         <button
           mat-button
           matStepperNext
           [disabled]="customerDetailsFg.invalid"
+          id="customer-next-btn"
         >
           Next
         </button>
@@ -72,6 +73,7 @@
               matInput
               placeholder="260 Bvd de la Madeleine, Nice"
               formControlName="address"
+              id="installation-address"
             />
             @if (installationDetailsFg.controls.address.invalid) {
             <mat-error>This field is required</mat-error>
@@ -79,7 +81,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date" />
+            <input matInput [matDatepicker]="picker" formControlName="date" id="installation-date"/>
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle
               matIconSuffix
@@ -92,7 +94,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Numbe of panels</mat-label>
-            <input matInput placeholder="10" formControlName="numberOfpanels" />
+            <input matInput placeholder="10" formControlName="numberOfpanels" id="installation-nb-panel"/>
             @if (installationDetailsFg.controls.numberOfpanels.invalid) {
             <mat-error>Type a positive number</mat-error>
             }
@@ -106,7 +108,7 @@
               <div [formGroup]="addInstalltionFg" class="flex column">
                 <mat-form-field>
                   <mat-label>Type</mat-label>
-                  <select matNativeControl required formControlName="type">
+                  <select matNativeControl required formControlName="type" id="installation-type">
                     @for(installationType of panelTypeOptions; track
                     installationType) {
                     <option value="{{ installationType }}">
@@ -117,7 +119,7 @@
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>ID</mat-label>
-                  <input matInput placeholder="123456" formControlName="ID" />
+                  <input matInput placeholder="123456" formControlName="ID" id="installation-id"/>
                   @if (addInstalltionFg.controls.ID.invalid) {
                   <mat-error>{{ installationIDErrorMsg }}</mat-error>
                   }
@@ -132,13 +134,14 @@
                   panels.length >=
                     installationDetailsFg.controls.numberOfpanels.value
                 "
+                id="installation-add-btn"
               >
                 Add
               </button>
             </mat-card-content>
           </mat-card>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperPrevious id="installation-back-btn">Back</button>
             <button
               mat-button
               matStepperNext
@@ -148,6 +151,7 @@
                   installationDetailsFg.controls.numberOfpanels.value
               "
               (click)="sendPV()"
+              id="installation-send-btn"
             >
               Send
             </button>
@@ -159,7 +163,7 @@
             @for(panel of panels; track panel.ID; let idx = $index) {
             <mat-list-item>
               <mat-icon matListItemIcon (click)="removePanel(idx)"
-                >delete</mat-icon
+              id="installation-panels-display">delete</mat-icon
               >
               <div matListItemTitle>{{ panel.type | uppercase }}</div>
               <div matListItemLine>{{ panel.ID }}</div>
@@ -179,7 +183,7 @@
       <p>Thank you, your repport is on its way to us</p>
     </div>
     <div>
-      <button mat-button (click)="stepper.reset()">Start new</button>
+      <button mat-button (click)="stepper.reset()" id="done-start-new">Start new</button>
     </div>
   </mat-step>
 </mat-stepper>
