@@ -1,0 +1,13 @@
+<mat-list>
+  <div mat-subheader>Installed panels</div>
+  @for(pv of pvmes; track pv.company.name; let idx = $index) {
+  <mat-list-item>
+    <div matListItemTitle>{{ pv.company.name }}</div>
+    <div matListItemLine>
+      {{ pv.installation.numberOfpanels + " installation(s)" }}
+    </div>
+  </mat-list-item>
+  } @empty {
+  <div mat-subheader>You do not have added any panel yet.</div>
+  }
+</mat-list>
