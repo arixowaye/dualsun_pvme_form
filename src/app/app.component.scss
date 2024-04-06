@@ -5,8 +5,9 @@
     color: black;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.header-spacer {
+    flex: 1 1 auto;
+}
+.text-center {
+    text-align: center;
 }

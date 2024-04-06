@@ -1,28 +1,50 @@
 {
   "pv_mise_en_services": [
     {
-      "id": 1,
-      "installation_date": "2017-02-09",
-      "company_id": 1,
-      "customer_id": 1,
-      "address": {
-        "id": 1,
-        "street": "Luis Barragan",
-        "city": "Montpellier",
-        "zip_code": "34000",
-        "country": "France"
+      "id": "8b99",
+      "company": {
+        "name": "dsdsds",
+        "siren": "123456789"
       },
-      "created_at": "2022-06-01T17:10:28.888Z",
-      "updated_at": "2022-06-01T17:10:28.888Z",
-      "solar_panels": [
-        {
-          "id": 1,
-          "type_of": "photovoltaic",
-          "serial_number": "123456",
-          "created_at": "2022-06-01T17:10:28.896Z",
-          "updated_at": "2022-06-01T17:10:28.896Z"
-        }
-      ]
+      "customer": {
+        "name": "dsdsdsd",
+        "email": "a@f.fr",
+        "telephone": "0987654433"
+      },
+      "installation": {
+        "address": "cdcdcd",
+        "date": "2024-04-09T22:00:00.000Z",
+        "numberOfpanels": "1",
+        "panels": [
+          {
+            "type": "hybrid",
+            "ID": "123456"
+          }
+        ]
+      }
+    },
+    {
+      "id": "19a9",
+      "company": {
+        "name": "Arix OWAYE",
+        "siren": "123456789"
+      },
+      "customer": {
+        "name": "smith jack",
+        "email": "smith@j.mail",
+        "telephone": "0900909989"
+      },
+      "installation": {
+        "address": "1 Rue du lac Le Muy",
+        "date": "2024-04-15T22:00:00.000Z",
+        "numberOfpanels": "1",
+        "panels": [
+          {
+            "type": "hybrid",
+            "ID": "123456"
+          }
+        ]
+      }
     }
   ]
 }
