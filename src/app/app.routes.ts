@@ -9,16 +9,10 @@ export const APP_ROUTES: Routes = [
         path: '',
         pathMatch: 'full',
         component: PvmesComponent,
-        data: {
-            title: 'commissioning report'
-        }
     },
     {
         path: 'preview',
         component: AllPvmesComponent,
-        data: {
-            title: 'All my PVMEs'
-        },
         resolve: {
             pvmes: allPvmesResolver
         }

@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
+const activatedRoute = jasmine.createSpyObj<ActivatedRoute>('ActivatedRoute', ['toString']);
 
 describe('AppComponent', () => {
   beforeEach(
@@ -11,8 +13,12 @@ describe('AppComponent', () => {
         RouterOutlet,
         MatToolbarModule,
         CommonModule,
-        AppComponent
+        AppComponent,
       ],
+      providers: [ {
+        provide: ActivatedRoute,
+        useValue: activatedRoute
+      }]
     }).compileComponents()
   );
 

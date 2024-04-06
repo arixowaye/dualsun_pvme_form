@@ -10,11 +10,11 @@ export class PvmesService {
   private readonly httpClient = inject(HttpClient);
   private readonly PV_URL = 'http://localhost:3000/pv_mise_en_services';
 
-  public postPV(pv: PostPV): Observable<any> {
-    return this.httpClient.post(this.PV_URL, pv);
+  public postPV(pv: PostPV): Observable<PostPV> {
+    return this.httpClient.post<PostPV>(this.PV_URL, pv);
   }
 
-  public getAllPV(): Observable<any> {
-    return this.httpClient.get(this.PV_URL);
+  public getAllPV(): Observable<PostPV[]> {
+    return this.httpClient.get<PostPV[]>(this.PV_URL);
   }
 }
