@@ -1,0 +1,15 @@
+.flex {
+    &.column {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    span {
+        font-weight: bold;
+        font-size: x-large;
+        padding-top: 50px;
+    }
+    img {
+        padding-top: 5px;
+    }
+}
