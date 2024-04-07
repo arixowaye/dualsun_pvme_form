@@ -1,7 +1,7 @@
-import { Injectable, WritableSignal, computed, effect, inject, signal } from "@angular/core";
+import { Injectable, computed, effect, inject, signal } from "@angular/core";
 import { PvmesService } from "./pvmes.service";
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, EMPTY, map, startWith, switchMap } from "rxjs";
+import { BehaviorSubject, EMPTY, switchMap } from "rxjs";
 import { PostPV } from "../component/pvmes/model/post-pv.model";
 
 @Injectable({
@@ -27,18 +27,14 @@ import { PostPV } from "../component/pvmes/model/post-pv.model";
     );
 
     private readonly pvmeBadgeSignal = computed(() => {
-        const incrementPvmeBadge = this.incrementPvmeBadgeSignal();
-        const pvmeQuantity = this.allPvmesSignal() ?? [];
-        if (incrementPvmeBadge) {
-            return pvmeQuantity.length + 1;
-        }
-        return pvmeQuantity.length;
+        return (this.allPvmesSignal() ?? []).length;
     });
 
     constructor() {
         effect(() => {
             this.incrementPvmeBadgeSignal(); // track increment to trigger computed signal update
-        });
+            this.refreshAllPVMes.next(true);
+        }, {allowSignalWrites: true});
     }
 
     public pvmeQuantity(): number {
