@@ -8,7 +8,7 @@
   ],
   "compilerOptions": {
     "sourceMap": false,
-    "types": ["cypress"]
+    "types": []
   },
   "exclude": [
     "**/*.spec.ts"
