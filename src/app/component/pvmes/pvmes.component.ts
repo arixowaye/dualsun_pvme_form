@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatStepperModule} from '@angular/material/stepper';
+import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import { CompanyDetailsFg, CustomerDetailsFg, InstallationDetailsFg, PanelGroup } from './model/pvme.model';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -16,6 +16,7 @@ import { Regex } from './model/regex.model';
 import { InstallationType } from './model/pvmes.enum';
 import {MatListModule} from '@angular/material/list';
 import { PvmesService } from 'src/app/service/pvmes.service';
+import { TrackPvmesService } from 'src/app/service/track-pvmes.service';
 
 @Component({
   selector: 'app-pvmes',
@@ -46,6 +47,7 @@ export class PvmesComponent {
   protected readonly fb = inject(FormBuilder);
   protected pvmesService = inject(PvmesService);
   protected matSnackBar = Inject(MatSnackBar);
+  protected trackPVMesService = inject(TrackPvmesService);
 
   companyDetailsFg = this.fb.nonNullable.group<CompanyDetailsFg>({
     name: this.fb.nonNullable.control('', [Validators.required]),
@@ -110,7 +112,7 @@ export class PvmesComponent {
     this.installationDetailsFg.controls.panels.removeAt(index);
   }
 
-  public sendPV(): void {
+  public sendPV(stepper: MatStepper): void {
     const pv = {
       company: {
         ...this.companyDetailsFg.value
@@ -123,6 +125,10 @@ export class PvmesComponent {
       }
     }
     this.pvmesService.postPV(pv).subscribe({
+      next: () => {
+        this.trackPVMesService.incrementPvmeBadgeSignal.set(true);
+        stepper.next();
+      },
       error: () => {
         this.matSnackBar.openFromTemplate(this.snackErrorTpl, {
           duration: 5 * 1000,
