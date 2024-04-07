@@ -1,6 +1,11 @@
 describe('PVME', () => {
+      let currentBadge = '0';
+      
+      beforeEach(() => {
+        cy.visit('/');
+      });
+
     it('Fill out the form', () => {
-      cy.visit('/');
       // company
       cy.get('#company-name').type('John Doe');
       cy.get('#company-siren').type('wrong value');
@@ -46,8 +51,17 @@ describe('PVME', () => {
       cy.get('#installation-add-btn').click();
       cy.get('.p-type').invoke('text').should('include', 'HYBRID');
 
-      cy.get('#installation-send-btn').click().then(() => {
-        cy.get('#done-start-new').should('have.text', ' Start new ');
+      // current badge
+      cy.get('.mat-badge-active').then(($value) => {
+        currentBadge = $value.text();
+
+        cy.get('#installation-send-btn').click().then(() => {
+          cy.get('#done-start-new').should('have.text', ' Start new ');
+
+          // check that the badge has been updated
+          const expectedText = Number(currentBadge.trim()) + 1;
+          cy.get('.mat-badge-active').should('have.text', `${expectedText}`);
+        });
       });
     });
   })

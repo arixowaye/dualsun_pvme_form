@@ -5,8 +5,9 @@
     title="Fill out a PV"
     routerLink="/"
     id="menu-item-pv"
+    aria-label="Fill out a pvme"
   >
-    <a><mat-icon>assignment</mat-icon></a>
+    <mat-icon aria-hidden="true">assignment</mat-icon>
   </button>
   <button
     mat-icon-button
@@ -14,8 +15,15 @@
     title="See all PVs"
     routerLink="/preview"
     id="menu-item-preview"
+    aria-label="Display all pvmes"
   >
-    <mat-icon>list</mat-icon>
+    <mat-icon
+      [matBadge]="pvmeQuantity"
+      matBadgeColor="warn"
+      matBadgeSize="small"
+      overlap="true"
+      aria-hidden="false"
+    >list</mat-icon>
   </button>
   <span class="header-spacer"></span>
   <a href="https://dualsun.com/" target="_blank" id="logo-link">

@@ -198,13 +198,12 @@
             </button>
             <button
               mat-button
-              matStepperNext
               [disabled]="
                 installationDetailsFg.invalid ||
                 panels.length <
                   installationDetailsFg.controls.numberOfpanels.value
               "
-              (click)="sendPV()"
+              (click)="sendPV(stepper)"
               id="installation-send-btn"
             >
               Send
