@@ -1,3 +1,27 @@
 {
-  "pv_mise_en_services": []
+  "pv_mise_en_services": [
+    {
+      "id": "8ad1",
+      "company": {
+        "name": "John Doe",
+        "siren": "123456789"
+      },
+      "customer": {
+        "name": "Peppa P",
+        "email": "peppa.p@a.fr",
+        "telephone": "0786459837"
+      },
+      "installation": {
+        "address": "260 Bvd de la Madeleine Nice",
+        "date": "2024-04-05T22:00:00.000Z",
+        "numberOfpanels": "01",
+        "panels": [
+          {
+            "type": "hybrid",
+            "ID": "123456"
+          }
+        ]
+      }
+    }
+  ]
 }

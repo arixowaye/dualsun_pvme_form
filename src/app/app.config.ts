@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -17,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch()
     ),
-    importProvidersFrom(BrowserAnimationsModule), provideAnimationsAsync()
+    importProvidersFrom(BrowserAnimationsModule),
+    provideAnimationsAsync()
   ]
 };
