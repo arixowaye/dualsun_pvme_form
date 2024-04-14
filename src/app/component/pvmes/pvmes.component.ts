@@ -16,7 +16,8 @@ import { Regex } from './model/regex.model';
 import { InstallationType } from './model/pvmes.enum';
 import {MatListModule} from '@angular/material/list';
 import { PvmesService } from 'src/app/service/pvmes.service';
-import { TrackPvmesService } from 'src/app/service/track-pvmes.service';
+import { PVMEStore } from 'src/app/service/track-pvmes.store';
+import { uniqueInstallationIdValidator } from './validator/installation-id.validator';
 
 @Component({
   selector: 'app-pvmes',
@@ -47,7 +48,7 @@ export class PvmesComponent {
   protected readonly fb = inject(FormBuilder);
   protected pvmesService = inject(PvmesService);
   protected matSnackBar = Inject(MatSnackBar);
-  protected trackPVMesService = inject(TrackPvmesService);
+  readonly pvmesStore = inject(PVMEStore);
 
   companyDetailsFg = this.fb.nonNullable.group<CompanyDetailsFg>({
     name: this.fb.nonNullable.control('', [Validators.required]),
@@ -56,7 +57,7 @@ export class PvmesComponent {
   customerDetailsFg = this.fb.nonNullable.group<CustomerDetailsFg>({
     name: this.fb.nonNullable.control('', [Validators.required]),
     email: this.fb.nonNullable.control('', [Validators.required, Validators.email]),
-    telephone: this.fb.nonNullable.control('', [Validators.required, Validators.pattern(Regex.french_phone_number)]),
+    telephone: this.fb.nonNullable.control('', [Validators.required, Validators.pattern(Regex.frenchPhoneNumber)]),
   });
   installationDetailsFg = this.fb.nonNullable.group<InstallationDetailsFg>({
     address: this.fb.nonNullable.control('', [Validators.required]),
@@ -70,8 +71,8 @@ export class PvmesComponent {
 
   addInstalltionFg = this.fb.nonNullable.group({
     type: this.fb.nonNullable.control(InstallationType.HYBRID, [Validators.required]),
-    ID: this.fb.nonNullable.control('', [Validators.required, Validators.pattern(Regex.installationID)])
-  })
+    ID: this.fb.nonNullable.control('', [Validators.required, Validators.pattern(Regex.installationID), uniqueInstallationIdValidator(this.installationDetailsFg)])
+  });
 
   public get companySirenErrorMsg() {
     return this.companyDetailsFg.controls.siren.hasError('required') ? 'This field is required' : 'Invalid format';
@@ -83,7 +84,10 @@ export class PvmesComponent {
     return this.customerDetailsFg.controls.email.hasError('required') ? 'This field is required' : 'Invalid format';
   }
   public get installationIDErrorMsg() {
-    return this.addInstalltionFg.controls.ID.hasError('required') ? 'This field is required' : 'Invalid format';
+    if (this.addInstalltionFg.controls.ID.hasError('required')) {
+      return 'This field is required';
+    }
+    return this.addInstalltionFg.controls.ID.hasError('unique') ? 'Panel already added' : 'Invalid format';
   }
   public get panels() {
     return this.installationDetailsFg.controls.panels.value;
@@ -126,7 +130,7 @@ export class PvmesComponent {
     }
     this.pvmesService.postPV(pv).subscribe({
       next: () => {
-        this.trackPVMesService.incrementPvmeBadgeSignal.set(true);
+        this.pvmesStore.incrementCount(1);
         stepper.next();
       },
       error: () => {

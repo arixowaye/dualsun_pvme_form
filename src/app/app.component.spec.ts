@@ -4,20 +4,24 @@ import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SpyObj } from './shared/types';
-import { TrackPvmesService } from './service/track-pvmes.service';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatBadgeHarness} from '@angular/material/badge/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PVMEStore } from './service/track-pvmes.store';
+import { PvmesService } from './service/pvmes.service';
+import { of } from 'rxjs';
+import { allPVMEs } from 'src/UTMocks/pvmes.mock';
 
 const activatedRoute = jasmine.createSpyObj<ActivatedRoute>('ActivatedRoute', ['toString']);
-const trackPvmesService = jasmine.createSpyObj<SpyObj<TrackPvmesService>>('TrackPvmesService', ['pvmeQuantity']);
-trackPvmesService.pvmeQuantity.and.returnValue(0);
 let loader: HarnessLoader;
 let component: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
+
+const pvmesService = jasmine.createSpyObj<SpyObj<PvmesService>>('PvmesService', ['getAllPV']);
+pvmesService.getAllPV.and.returnValue(of([]));
 
 describe('AppComponent', () => {
 
@@ -36,9 +40,10 @@ describe('AppComponent', () => {
         provide: ActivatedRoute,
         useValue: activatedRoute
       },
+      PVMEStore,
       {
-        provide: TrackPvmesService,
-        useValue: trackPvmesService
+        provide: PvmesService,
+        useValue: pvmesService
       }]
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
@@ -51,13 +56,18 @@ describe('AppComponent', () => {
   });
 
   it('badge should display with number of PVMEs', async () => {
+    const store = TestBed.inject(PVMEStore);
+    store.loadAll().subscribe();
+
     const badges = await loader.getAllHarnesses(MatBadgeHarness);
     let text = await badges[0].getText();
     expect(text).toEqual('0');
 
-    trackPvmesService.pvmeQuantity.and.returnValue(2);
+    pvmesService.getAllPV.and.returnValue(of(allPVMEs));
+    store.loadAll().subscribe();
 
     fixture.detectChanges();
+    component.ngOnInit();
     text = await badges[0].getText();
     expect(text).toEqual('2');
   });

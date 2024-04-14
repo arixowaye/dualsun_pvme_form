@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { TrackPvmesService } from 'src/app/service/track-pvmes.service';
+import { PostPV } from '../pvmes/model/post-pv.model';
+import { PVMEStore } from 'src/app/service/track-pvmes.store';
 
 @Component({
   selector: 'app-all-pvmes',
@@ -9,10 +10,14 @@ import { TrackPvmesService } from 'src/app/service/track-pvmes.service';
   templateUrl: './all-pvmes.component.html',
   styleUrl: './all-pvmes.component.scss'
 })
-export class AllPvmesComponent {
-  private readonly trackPvmesService = inject(TrackPvmesService);
+export class AllPvmesComponent implements OnInit {
+  
+  ngOnInit(): void {
+    this.pvmesStore.loadAll().subscribe();
+  }
+  readonly pvmesStore = inject(PVMEStore);
 
-  public get pvmes() {
-    return this.trackPvmesService.allPVMes();
+  public get pvmes(): Array<PostPV> {
+    return this.pvmesStore.pvmes();
   }
 }

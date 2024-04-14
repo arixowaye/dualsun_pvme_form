@@ -1,11 +1,11 @@
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { TrackPvmesService } from "./track-pvmes.service";
 import { SpyObj } from "../shared/types";
 import { PvmesService } from "./pvmes.service";
+import { PVMEStore } from "./track-pvmes.store";
+import { of } from "rxjs";
 
-describe('TrackPvmesService', () => {
-    let service: TrackPvmesService;
+describe('PVMEStore', () => {
     const pvmesService = jasmine.createSpyObj<SpyObj<PvmesService>>('PvmesService', ['getAllPV']);
   
     beforeEach(() => {
@@ -15,12 +15,22 @@ describe('TrackPvmesService', () => {
             {
               provide: PvmesService,
               useValue: pvmesService
-            }
+            },
+            PVMEStore
           ]
       });
-      service = TestBed.inject(TrackPvmesService);
   });
-  it('should create', () => {
-    expect(service).toBeTruthy();
+  it('should get state', () => {
+    const store = TestBed.inject(PVMEStore);
+    
+    pvmesService.getAllPV.and.returnValue(of([]));
+    store.loadAll().subscribe();
+
+    expect(store.pvmes()).toEqual([]);
+
+    pvmesService.getAllPV.and.returnValue(of([{}]));
+    store.loadAll().subscribe();
+
+    expect(store.pvmes().length).toEqual(1);
   });
 });

@@ -1,27 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AllPvmesComponent } from './all-pvmes.component';
-import { InstallationType } from '../pvmes/model/pvmes.enum';
 import { MatListModule } from '@angular/material/list';
 import { HarnessLoader } from "@angular/cdk/testing";
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import {MatListHarness} from '@angular/material/list/testing';
-import { TrackPvmesService } from 'src/app/service/track-pvmes.service';
 import { SpyObj } from 'src/app/shared/types';
 import { allPVMEs } from 'src/UTMocks/pvmes.mock';
+import { PVMEStore } from 'src/app/service/track-pvmes.store';
+import { PvmesService } from 'src/app/service/pvmes.service';
+import { of } from 'rxjs';
 
 describe('AllPvmesComponent', () => {
   let component: AllPvmesComponent;
   let fixture: ComponentFixture<AllPvmesComponent>;
   let loader: HarnessLoader;
-  const trackPvmesService = jasmine.createSpyObj<SpyObj<TrackPvmesService>>('TrackPvmesService', ['allPVMes']);
+
+  const pvmesService = jasmine.createSpyObj<SpyObj<PvmesService>>('PvmesService', ['getAllPV']);
+  pvmesService.getAllPV.and.returnValue(of(allPVMEs));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AllPvmesComponent, MatListModule],
       providers: [
+        PVMEStore,
         {
-          provide: TrackPvmesService,
-          useValue: trackPvmesService
+          provide: PvmesService,
+          useValue: pvmesService
         }
       ]
     })
@@ -30,7 +34,6 @@ describe('AllPvmesComponent', () => {
     fixture = TestBed.createComponent(AllPvmesComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
-    trackPvmesService.allPVMes.and.returnValue(allPVMEs);
     fixture.detectChanges();
   });
 
